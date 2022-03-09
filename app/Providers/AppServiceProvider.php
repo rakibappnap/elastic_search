@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
-use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultstringLength(191);
         $this->app->singleton('EsClient', function ($app) {
             return ClientBuilder::create()->setHosts($app['config']->get('constants.hosts'))->build();
         });
