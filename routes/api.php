@@ -4,6 +4,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ThemeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,10 @@ use App\Http\Controllers\API\AuthController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+
+Route::post('indexTheme', [ThemeController::class, 'store'])->middleware('auth:api');
+Route::post('saveTheme', [ThemeController::class, 'store'])->middleware('auth:api');
+Route::post('updateTheme', [ThemeController::class, 'update'])->middleware('auth:api');
+Route::delete('deleteTheme', [ThemeController::class, 'delete'])->middleware('auth:api');
+
+Route::get('search', [ThemeController::class, 'search'])->middleware('auth:api');
