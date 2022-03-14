@@ -35,7 +35,7 @@ class ThemeController extends Controller
             'title' => 'required',
             'userId' => 'required|numeric',
             'username' => 'required',
-            'category' => 'required',
+            'category' => 'nullable',
             'link' => 'nullable',
             'caption' => 'required',
             'type' => 'required',
