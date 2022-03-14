@@ -75,3 +75,4 @@ Route::get('/', function () {
 });
 Route::get('/esIndex', [\App\Http\Controllers\EsController::class, 'index_entries']);
 Route::get('/search', [\App\Http\Controllers\EsController::class, 'search']);
+Route::get('/index_all', [\App\Http\Controllers\EsController::class, 'index_all']);

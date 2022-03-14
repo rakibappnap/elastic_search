@@ -117,4 +117,24 @@ class ThemeController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR, []);
         }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index_themes(Request $request)
+    {
+
+        try {
+            $this->esService->store($request);
+            $response['message'] = 'Saved Successfully';
+            return response()->json($response, Response::HTTP_OK, []);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR, []);
+        }
+    }
 }

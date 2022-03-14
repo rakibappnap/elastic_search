@@ -82,7 +82,6 @@ class EsService
             ]
         ];
         $hits = $this->esClient::search($params);
-        dd($hits);
         if (count($hits['hits']['hits']) > 0) {
             $resultArr = array();
             foreach ($hits['hits']['hits'] as $res) {
@@ -96,8 +95,12 @@ class EsService
 
     public function delete($id)
     {
+        $params = [
+            'index' => 'theme_index_'.$id,
+            'id'    => $id
+        ];
         try {
-            $this->esClient::indices()->delete($params);
+            $this->esClient::delete($params);
             return true;
         } catch (\Exception $exception) {
             return $exception->getMessage();

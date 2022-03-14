@@ -85,4 +85,46 @@ class EsController extends Controller
         ];
         dd($this->elasticsearch::search($params));
     }
+
+    public function index_all()
+    {
+        $themes = DB::connection('mysql2')
+            ->table('themes as t')
+            ->join('users as u', 'u.userId', '=', 't.userId')
+            ->where('t.published', '=', 1)
+            ->where('t.removed', '=', 0)
+            ->where('t.isActive', '=', 1)
+            ->select('t.themeId', 't.userId', 't.title', 't.caption', 't.link', 'u.username', DB::raw('CASE WHEN t.type = 0 then "Free" WHEN t.type = 1 then "Paid" ELSE "Premium" end as type'))
+            ->get();
+        $count = 0;
+        foreach ($themes as $theme) {
+            $get_categories = DB::connection('mysql2')
+                ->table('themeCategories as tc')
+                ->join('categories as c', 'c.id', '=', 'tc.categoryId')
+                ->where('tc.themeId', '=', $theme->themeId)
+                ->where('tc.status', '=', 1)
+                ->select('c.name')
+                ->get();
+            $categories = $get_categories->count() > 0 ? implode(',', array_column($get_categories->toArray(), 'name')) : null;
+
+            $params = [
+                'index' => 'theme_index_'.$theme->themeId,
+                'id'    => $theme->themeId,
+                'body'  => [
+                    'id'    => $theme->themeId,
+                    'title' => $theme->title,
+                    'userId' => $theme->userId,
+                    'username' => $theme->username,
+                    'category' => $categories,
+                    'link' => $theme->link,
+                    'caption' => $theme->caption,
+                    'type' => $theme->type,
+                ]
+            ];
+            if ($this->elasticsearch::index($params)) {
+                $count++;
+            }
+        }
+        dd($count);
+    }
 }
