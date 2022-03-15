@@ -91,7 +91,7 @@ class ThemeController extends Controller
     public function search(Request $request)
     {
         $response = array();
-        $get_results = $this->esService->search($request->get('keyword'));
+        $get_results = $this->esService->search($request->get('keyword'), $request->get('offset'));
         if ($get_results) {
             $status = Response::HTTP_OK;
             $response['status'] = true;

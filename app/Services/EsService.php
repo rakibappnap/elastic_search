@@ -58,19 +58,19 @@ class EsService
         }
     }
 
-    public function search($keyword)
+    public function search($keyword, $offset)
     {
         $params = [
-            'size' => 20,
+            'from' => $offset,
+            'size' => 12,
             'index' => '',
             'body'  => [
                 'query' => [
                     'multi_match' => [
                         'fields' => [
-                            'title',
-                            'category',
+                            'title^5',
+                            'category^5',
                             'caption',
-                            'type'
                         ],
                         'query' => $keyword,
                         'fuzziness' => 'AUTO',
