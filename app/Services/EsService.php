@@ -45,10 +45,7 @@ class EsService
             'body'  => [
                 'id'    => $request->id,
                 'title' => $request->title,
-                'userId' => $request->userId,
-                'username' => $request->username,
                 'category' => $request->category,
-                'link' => $request->link,
                 'caption' => $request->caption,
                 'type' => $request->type,
             ]
@@ -63,7 +60,6 @@ class EsService
 
     public function search($keyword)
     {
-       // dd($keyword);
         $params = [
             'size' => 20,
             'index' => '',
@@ -71,9 +67,10 @@ class EsService
                 'query' => [
                     'multi_match' => [
                         'fields' => [
-                            'title^5',
-                            'category^5',
-                            'caption'
+                            'title',
+                            'category',
+                            'caption',
+                            'type'
                         ],
                         'query' => $keyword,
                         'fuzziness' => 'AUTO',
@@ -82,6 +79,7 @@ class EsService
             ]
         ];
         $hits = $this->esClient::search($params);
+        //dd($hits);
         if (count($hits['hits']['hits']) > 0) {
             $resultArr = array();
             foreach ($hits['hits']['hits'] as $res) {

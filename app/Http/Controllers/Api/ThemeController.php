@@ -18,7 +18,6 @@ class ThemeController extends Controller
      */
     public function __construct(EsService $esService)
     {
-        //dd('asdasd');
         $this->esService = $esService;
     }
 
@@ -67,8 +66,8 @@ class ThemeController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required|numeric',
             'title' => 'required',
-            'userId' => 'required|numeric',
-            'username' => 'required',
+            'userId' => 'nullable',
+            'username' => 'nullable',
             'category' => 'required',
             'link' => 'nullable',
             'caption' => 'required',
