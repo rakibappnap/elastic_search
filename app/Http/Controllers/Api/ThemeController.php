@@ -38,6 +38,10 @@ class ThemeController extends Controller
             'link' => 'nullable',
             'caption' => 'required',
             'type' => 'required',
+            'views' => 'required|numeric',
+            'downloads' => 'required|numeric',
+            'likes' => 'required|numeric',
+            'comments' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -72,6 +76,10 @@ class ThemeController extends Controller
             'link' => 'nullable',
             'caption' => 'required',
             'type' => 'required',
+            'views' => 'required|numeric',
+            'downloads' => 'required|numeric',
+            'likes' => 'required|numeric',
+            'comments' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {

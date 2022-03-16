@@ -27,6 +27,10 @@ class EsService
                 'link' => $request->link,
                 'caption' => $request->caption,
                 'type' => $request->type,
+                'views' => $request->views,
+                'downloads' => $request->downloads,
+                'likes' => $request->likes,
+                'comments' => $request->comments,
             ]
         ];
         try {
@@ -41,17 +45,21 @@ class EsService
     {
         $params = [
             'index' => 'theme_index_'.$request->id,
-            'id'    => $request->id,
             'body'  => [
                 'id'    => $request->id,
                 'title' => $request->title,
                 'category' => $request->category,
                 'caption' => $request->caption,
                 'type' => $request->type,
+                'views' => $request->views,
+                'downloads' => $request->downloads,
+                'likes' => $request->likes,
+                'comments' => $request->comments,
             ]
         ];
+        //dd('asd');
         try {
-            $this->esClient::index($params);
+            $this->esClient::updateByQuery($params);
             return true;
         } catch (\Exception $exception) {
             return $exception->getMessage();
@@ -76,10 +84,10 @@ class EsService
                         'fuzziness' => 'AUTO',
                     ]
                 ]
-            ]
+            ],
         ];
+
         $hits = $this->esClient::search($params);
-        //dd($hits);
         if (count($hits['hits']['hits']) > 0) {
             $resultArr = array();
             foreach ($hits['hits']['hits'] as $res) {
