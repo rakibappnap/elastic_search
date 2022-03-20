@@ -43,12 +43,16 @@ class EsService
 
     public function update($request)
     {
+       $this->delete($request->id);
         $params = [
             'index' => 'theme_index_'.$request->id,
             'body'  => [
                 'id'    => $request->id,
                 'title' => $request->title,
+                'userId' => $request->userId,
+                'username' => $request->username,
                 'category' => $request->category,
+                'link' => $request->link,
                 'caption' => $request->caption,
                 'type' => $request->type,
                 'views' => $request->views,
@@ -57,7 +61,7 @@ class EsService
                 'comments' => $request->comments,
             ]
         ];
-        //dd('asd');
+        $test = $this->esClient::index($params);
         try {
             $this->esClient::updateByQuery($params);
             return true;
@@ -68,6 +72,7 @@ class EsService
 
     public function search($keyword, $offset)
     {
+        //dd($offset);
         $params = [
             'from' => $offset,
             'size' => 12,
@@ -88,6 +93,7 @@ class EsService
         ];
 
         $hits = $this->esClient::search($params);
+    
         if (count($hits['hits']['hits']) > 0) {
             $resultArr = array();
             foreach ($hits['hits']['hits'] as $res) {
