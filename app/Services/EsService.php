@@ -83,7 +83,7 @@ class EsService
                         'fields' => [
                             'title^5',
                             'category^5',
-                            'caption^3',
+                            'caption^10',
                         ],
                         'query' => $keyword,
                         'fuzziness' => 'AUTO',
