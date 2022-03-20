@@ -44,29 +44,7 @@ class EsService
     public function update($request)
     {
        $this->delete($request->id);
-        $params = [
-            'index' => 'theme_index_'.$request->id,
-            'body'  => [
-                'id'    => $request->id,
-                'title' => $request->title,
-                'userId' => $request->userId,
-                'username' => $request->username,
-                'category' => $request->category,
-                'link' => $request->link,
-                'caption' => $request->caption,
-                'type' => $request->type,
-                'views' => $request->views,
-                'downloads' => $request->downloads,
-                'likes' => $request->likes,
-                'comments' => $request->comments,
-            ]
-        ];
-        try {
-            $this->esClient::updateByQuery($params);
-            return true;
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
-        }
+        return $this->store($request);
     }
 
     public function search($keyword, $offset)
