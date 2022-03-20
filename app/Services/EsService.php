@@ -61,7 +61,6 @@ class EsService
                 'comments' => $request->comments,
             ]
         ];
-        $test = $this->esClient::index($params);
         try {
             $this->esClient::updateByQuery($params);
             return true;
