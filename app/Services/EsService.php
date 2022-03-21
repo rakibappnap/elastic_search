@@ -31,8 +31,10 @@ class EsService
                 'downloads' => $request->downloads,
                 'likes' => $request->likes,
                 'comments' => $request->comments,
+                'shares' => $request->shares,
             ]
         ];
+
         try {
             $this->esClient::index($params);
             return true;
@@ -43,9 +45,33 @@ class EsService
 
     public function update($request)
     {
-       $this->delete($request->id);
-        return $this->store($request);
+        $params = [
+            'index' => 'theme_index_'.$request->id,
+            'id'    => $request->id,
+            'body'  => [
+                'doc' => [
+                    'title' => $request->title,
+                    'userId' => $request->userId,
+                    'username' => $request->username,
+                    'category' => $request->category,
+                    'caption' => $request->caption,
+                    'type' => $request->type,
+                    'views' => $request->views,
+                    'downloads' => $request->downloads,
+                    'likes' => $request->likes,
+                    'comments' => $request->comments,
+                    'shares' => $request->shares,
+                ]
+            ]
+        ];
+        try {
+            $this->esClient::update($params);
+            return true;
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
     }
+
 
     public function search($keyword, $offset)
     {
@@ -70,7 +96,7 @@ class EsService
         ];
 
         $hits = $this->esClient::search($params);
-    
+        //dd($hits);
         if (count($hits['hits']['hits']) > 0) {
             $resultArr = array();
             foreach ($hits['hits']['hits'] as $res) {
